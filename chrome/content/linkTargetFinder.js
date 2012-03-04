@@ -65,7 +65,9 @@ checkbox.disabled = false;\
 });\
 $(\'#warning_box\').html(\"\");\
 }\
-};" + scriptProceed + scriptShowConfirm + scriptUpdate + scriptAudit;
+};";
+
+var injectScript = scriptClick + scriptProceed + scriptShowConfirm + scriptUpdate + scriptAudit;
 
 // verify
 var ballotHash = "";
@@ -93,7 +95,6 @@ var heliosCheater = function () {
 	    var url = content.document.location.href;
 	    // voting page
 	    if (url.toString().match("vote.heliosvoting.org/booth") != null) {
-
 		//////////////////////////////////////////////////
 		// select
 		var cb = content.document.getElementById("answer_0_1");
@@ -104,7 +105,7 @@ var heliosCheater = function () {
 		    var s = content.document.getElementById("check_script");
 		    if (s == null) {
 			var aa = content.document.getElementsByTagName("script")[12];
-			addScript(scriptClick, aa.parentNode, "check_script");
+			addScript(injectScript, aa.parentNode, "check_script");
 		    }
 		}
 		//////////////////////////////////////////////////
@@ -131,20 +132,20 @@ var heliosCheater = function () {
 		}
 		//////////////////////////////////////////////////
 		// audit
-		var auditDiv = content.document.getElementById("auditbody");
+		var auditBody = content.document.getElementById("auditbody");
 		var btAudit = null;
-		if (auditDiv != null)
-		    btAudit = auditDiv.getElementsByTagName("input")[0];
+		if (auditBody != null) 
+		    btAudit = auditBody.getElementsByTagName("input")[0];
 		if (btAudit != null) {
 		    if (!chooseRight)
 			btAudit.setAttribute("onclick", "BOOTH.audit_yoyoyo();");
 		    else
 			btAudit.setAttribute("onclick", "BOOTH.audit_ballot();");
 		}
-		var btPost = content.document.getElementById("post_audited_ballot_button");
-		var btBackToVoting = null
-		if (btPost != null)
-		    btBackToVoting = btPost.parentNode.getElementsByTagName("input")[1];
+		var auditDiv = content.document.getElementById("audit_div");
+		var btBackToVoting = null;
+		if (auditDiv != null)
+		    btBackToVoting = auditDiv.getElementsByTagName("input")[1];
 		if (btBackToVoting != null) {
 		    if (!chooseRight)
 			btBackToVoting.setAttribute("onclick", "BOOTH.my_show_confirm();");
